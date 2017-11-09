@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
-const URL = 'http://localhost:3001';
+const FRONTENDURL = 'http://localhost:3000';
+const BACKENDURL = 'http://localhost:3001';
 
 class SignUp extends Component {
   constructor(props) {
@@ -15,7 +16,7 @@ class SignUp extends Component {
       password: '',
       passwordConfirmation: '',
       dob: '',
-      minAge: ''
+      signUpErrors: ''
     };
 
     // Let's set the default value of the input field to be equal to 16 years old.
@@ -32,7 +33,7 @@ class SignUp extends Component {
       mm = '0' + mm;
     }
 
-    this.state.minAge = `${yyyy - 16}-${mm}-${dd}`;
+    this.state.dob = `${yyyy - 16}-${mm}-${dd}`;
 
     // Let's bind all functions to this.
     this._handleFirstNameChange = this._handleFirstNameChange.bind(this);
@@ -77,7 +78,7 @@ class SignUp extends Component {
     e.preventDefault();
 
     // Let's submit a post request to back-end to create user in database.
-    axios.post(`${URL}/users`, {
+    axios.post(`${BACKENDURL}/users`, {
       user: {
         first_name: this.state.firstName,
         last_name: this.state.lastName,
@@ -91,7 +92,24 @@ class SignUp extends Component {
     {
       withCredentials: true
     }).then(function (result) {
-      console.log(result);
+      // If there is an error on the server side, the JSON object will only return the variables there were errors with, hence it will never return an id. Thus we can check for status of the id to see if it all went well on server side.
+      if (result.data.id === undefined) {
+        var errString = '';
+        for (var key in result.data) {
+          for (var i = 0; i < result.data[key].length; i++) {
+            console.log(key);
+            console.log(result.data[key]);
+            errString += (`<li>${key} ${result.data[key][i]}</li>`);
+          }
+        }
+        this.setState( { signUpErrors: errString } );
+        console.log(errString);
+        console.log(this.state.signUpErrors);
+        console.log("THERE HAS BEEN AN ERROR WITH CREATING");
+
+        return;
+      }
+      window.location.replace(FRONTENDURL);
     }.bind(this))
   }
 
@@ -101,17 +119,18 @@ class SignUp extends Component {
     return (
       <div className="signUp">
         <h2>Sign Up!</h2>
+        <ul>{ this.state.signUpErrors }</ul>
         <form onSubmit={this._handleSubmit}>
           <fieldset>
-            <label htmlFor="fNameInput">First Name*</label>
+            <label htmlFor="fNameInput">First Name</label>
             <input id="fNameInput" type="text" placeholder="First Name" onInput={ this._handleFirstNameChange } autoFocus required/>
           </fieldset>
           <fieldset>
-            <label htmlFor="lNameInput">Last Name*</label>
+            <label htmlFor="lNameInput">Last Name</label>
             <input id="lNameInput" type="text" placeholder="Last Name" onInput={this._handleLastNameChange} required />
           </fieldset>
           <fieldset>
-            <label htmlFor="unInput">Username* (between 8 and 16 characters)</label>
+            <label htmlFor="unInput">Username (maximum length 30 characters)</label>
             <input id="unInput" type="text" placeholder="Username" onInput={this._handleUsernameChange} required />
           </fieldset>
           <fieldset>
@@ -119,7 +138,7 @@ class SignUp extends Component {
             <input id="emailInput" type="email" placeholder="Email" onInput={this._handleEmailChange} required />
           </fieldset>
           <fieldset>
-            <label htmlFor="pwInput">Password</label>
+            <label htmlFor="pwInput">Password (minimum length 6 characters)</label>
             <input id="pwInput" type="password" placeholder="Password" onInput={this._handlePassChange} required/>
           </fieldset>
           <fieldset>
@@ -128,7 +147,7 @@ class SignUp extends Component {
           </fieldset>
           <fieldset>
             <label htmlFor="dateInput">Date of Birth</label>
-            <input id="dateInput" type="date" onChange={this._handleBirthdayChange} defaultValue={this.state.minAge} required />
+            <input id="dateInput" type="date" onChange={this._handleBirthdayChange} defaultValue={this.state.dob} required />
           </fieldset>
 
           <button type="submit" method="post">Sign Up!</button>
