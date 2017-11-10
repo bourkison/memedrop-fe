@@ -16,7 +16,7 @@ class SignUp extends Component {
       password: '',
       passwordConfirmation: '',
       dob: '',
-      signUpErrors: ''
+      signUpErrors: []
     };
 
     // Let's set the default value of the input field to be equal to 16 years old.
@@ -94,21 +94,17 @@ class SignUp extends Component {
     }).then(function (result) {
       // If there is an error on the server side, the JSON object will only return the variables there were errors with, hence it will never return an id. Thus we can check for status of the id to see if it all went well on server side.
       if (result.data.id === undefined) {
-        var errString = '';
-        for (var key in result.data) {
-          for (var i = 0; i < result.data[key].length; i++) {
-            console.log(key);
-            console.log(result.data[key]);
-            errString += (`<li>${key} ${result.data[key][i]}</li>`);
-          }
+        var errArr = []
+        for (var i = 0; i < result.data.length; i++) {
+          errArr.push(<li key={i}>{result.data[i]}</li>);
         }
-        this.setState( { signUpErrors: errString } );
-        console.log(errString);
-        console.log(this.state.signUpErrors);
-        console.log("THERE HAS BEEN AN ERROR WITH CREATING");
+
+        this.setState( { signUpErrors: errArr } );
 
         return;
       }
+      // TODO: Make it so when you sign up it instantly signs you in.
+
       window.location.replace(FRONTENDURL);
     }.bind(this))
   }
