@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
+import {Route, Redirect} from 'react-router';
+import axios from 'axios';
 
+const FRONTENDURL = 'http://localhost:3000';
+const BACKENDURL = 'http://localhost:3001';
 
 class Login extends Component {
   constructor(props) {
     super(props);
-    this.state = { username: '', password: '' };
+    this.state = { username: '', password: '', loginErrors: [] };
 
     this._handleChangeUsername = this._handleChangeUsername.bind(this);
     this._handleChangePassword = this._handleChangePassword.bind(this);
@@ -22,7 +26,29 @@ class Login extends Component {
   _handleSubmit(e) {
     e.preventDefault();
 
-    console.log(this.state.username, this.state.password);
+    axios.post(`${BACKENDURL}/login`, {
+      username: this.state.username,
+      password: this.state.password
+    },
+    {
+      withCredentials: true
+    }).then(function (result) {
+      if (result.data.errors !== undefined) {
+        var errArr = [];
+
+        for (var i = 0; i < result.data.errors.length; i++ ) {
+          errArr.push(<li key={i}>{result.data.errors[i]}</li>)
+        }
+        this.setState( { loginErrors: errArr } );
+
+        return;
+      }
+
+      this.setState( { loginErrors: [] } );
+      // Set current user through this function.
+      this.props.setUser(result.data);
+
+    }.bind(this));
   }
 
   render() {

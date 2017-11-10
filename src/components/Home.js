@@ -1,6 +1,14 @@
 import React, { Component } from 'react'
 
 class Home extends Component {
+  constructor(props) {
+    super(props)
+
+    if (this.props.currentUser !== null) {
+      console.log("Logged in user: ", this.props.currentUser);
+    }
+  }
+
   render() {
     return (
       <div>
