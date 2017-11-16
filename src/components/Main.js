@@ -3,6 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import Home from './Home';
 import Login from './Login';
 import SignUp from './SignUp';
+import Header from './Header';
 
 const FRONTENDURL = 'http://localhost:3000';
 
@@ -22,13 +23,16 @@ class Main extends Component {
 
   render() {
     return (
-      <main>
-        <Switch>
-          <Route exact path="/" render={(props) => (<Home currentUser={this.state.currentUser} {...props} />)} />
-          <Route exact path='/login' render={(props) => ( <Login setUser={this.setUser} {...props} /> )} />
-          <Route exact path='/signup' component={SignUp}/>
-        </Switch>
-      </main>
+      <div>
+        <Header currentUser={this.state.currentUser} />
+        <main>
+          <Switch>
+            <Route exact path="/" render={(props) => (<Home currentUser={this.state.currentUser} {...props} />)} />
+            <Route exact path='/login' render={(props) => ( <Login setUser={this.setUser} {...props} /> )} />
+            <Route exact path='/signup' component={SignUp}/>
+          </Switch>
+        </main>
+      </div>
     )
   }
 }
