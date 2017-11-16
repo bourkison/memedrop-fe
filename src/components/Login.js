@@ -46,7 +46,6 @@ class Login extends Component {
       this.setState( { loginErrors: [] } );
       // Set current user through this function.
       this.props.setUser(result.data);
-      console.log(this, this.props);
       this.props.history.push('/');
     }.bind(this));
   }

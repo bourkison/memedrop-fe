@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
+import NewPost from './NewPost';
 
 class Home extends Component {
   constructor(props) {
     super(props)
-    console.log(this.props);
-
     if (this.props.currentUser !== null) {
       console.log("Logged in user: ", this.props.currentUser);
     }
@@ -15,6 +14,7 @@ class Home extends Component {
       return (
         <div>
           <h1>Welcome {this.props.currentUser.first_name}</h1>
+          <NewPost />
         </div>
       )
     } else {

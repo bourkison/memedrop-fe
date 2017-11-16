@@ -4,11 +4,6 @@ import { Link } from 'react-router-dom'
 // The Header creates links that can be used to navigate
 // between routes.
 class Header extends Component {
-  constructor(props) {
-    super(props);
-
-  }
-
   render() {
     if (this.props.currentUser !== null) {
       return (
