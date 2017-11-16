@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import NewPost from './NewPost';
+import Feed from './Feed';
 
 class Home extends Component {
   constructor(props) {
@@ -15,6 +16,7 @@ class Home extends Component {
         <div>
           <h1>Welcome {this.props.currentUser.first_name}</h1>
           <NewPost />
+          <Feed currentUser={this.props.currentUser} />
         </div>
       )
     } else {
