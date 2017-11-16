@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import {Route, Redirect} from 'react-router';
 import axios from 'axios';
 
 const FRONTENDURL = 'http://localhost:3000';
@@ -47,7 +46,8 @@ class Login extends Component {
       this.setState( { loginErrors: [] } );
       // Set current user through this function.
       this.props.setUser(result.data);
-
+      console.log(this, this.props);
+      this.props.history.push('/');
     }.bind(this));
   }
 

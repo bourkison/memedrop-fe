@@ -4,6 +4,8 @@ import Home from './Home';
 import Login from './Login';
 import SignUp from './SignUp';
 
+const FRONTENDURL = 'http://localhost:3000';
+
 class Main extends Component {
   constructor(props) {
     super(props);
@@ -11,7 +13,6 @@ class Main extends Component {
     this.state = {
       currentUser: null
     }
-
     this.setUser = this.setUser.bind(this);
   }
 
@@ -23,8 +24,8 @@ class Main extends Component {
     return (
       <main>
         <Switch>
-          <Route exact path='/' render={(props) => ( <Home currentUser={this.state.currentUser}/> )}/>
-          <Route exact path='/login' render={(props) => ( <Login setUser={this.setUser}/> )} />
+          <Route exact path="/" render={(props) => (<Home currentUser={this.state.currentUser} {...props} />)} />
+          <Route exact path='/login' render={(props) => ( <Login setUser={this.setUser} {...props} /> )} />
           <Route exact path='/signup' component={SignUp}/>
         </Switch>
       </main>
