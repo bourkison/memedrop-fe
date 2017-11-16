@@ -105,10 +105,10 @@ class SignUp extends Component {
 
         return;
       }
-      // TODO: Make it so when you sign up it instantly signs you in.
       this.setState( { signUpErrors: [] } );
 
-      window.location.replace(FRONTENDURL);
+      this.props.setUser(result.data);
+      this.props.history.push('/');
     }.bind(this))
   }
 

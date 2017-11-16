@@ -29,7 +29,7 @@ class Main extends Component {
           <Switch>
             <Route exact path="/" render={(props) => (<Home currentUser={this.state.currentUser} {...props} />)} />
             <Route exact path='/login' render={(props) => ( <Login setUser={this.setUser} {...props} /> )} />
-            <Route exact path='/signup' component={SignUp}/>
+            <Route exact path='/signup' render={(props) => ( <SignUp setUser={this.setUser} {...props} /> )}/>
           </Switch>
         </main>
       </div>
