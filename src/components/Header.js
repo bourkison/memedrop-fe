@@ -5,13 +5,16 @@ import { Link } from 'react-router-dom'
 // between routes.
 class Header extends Component {
   render() {
+
     if (this.props.currentUser !== null) {
+      var profileURL = `/profile/${this.props.currentUser.username}`
       return (
         <header>
           <nav>
             <ul>
               <li><Link to='/'>Home</Link></li>
               <li><Link to='/edit'>Edit Profile</Link></li>
+              <li><Link to={profileURL}>Your Profile</Link></li>
               <li><Link to='logout'>Logout</Link></li>
             </ul>
           </nav>
